@@ -30,7 +30,7 @@ namespace IniParser
             }
             
             Console.WriteLine(data.TryGetInt(parser.GetValue("SECTION1", "nameI")));
-            Console.WriteLine(data.TryGetInt(parser.GetValue("SECTION1", "nameD")));
+            Console.WriteLine(data.TryGetInt(parser.GetValue("SECTION1", "nameD"))); //ERROR: Failed to parse: int
             Console.WriteLine(data.TryGetString(parser.GetValue("SECTION2", "nameS")));
         }
     }
