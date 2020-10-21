@@ -1,55 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
 
-
-namespace lab1
+namespace IniParser
 {
     class Program
     {
         static void Main(string[] args)
         {
-            const string path = @"\Users\Рашид\Desktop\с#\lab1\lab1\test.ini";
+            Parser parser = new Parser();
+            IniData data = new IniData();
 
-            Data data = new Data(path);
-
-            
-            
-            foreach (KeyValuePair<string, Dictionary<string, string>> keyValue in data.GetMap())
+            if (!File.Exists(parser.path))
             {
-                foreach (KeyValuePair<string, string> keyValuePair in keyValue.Value)
-                {
-                    Console.WriteLine(keyValue.Key + " " + keyValuePair.Key + " " + keyValuePair.Value);
-                }
+                throw new Exception("ERROR: File does not exist");
+            }
+
+            int index = parser.path.IndexOf('.');
+            string extencion = parser.path.Substring(index, 4);
+            if (extencion != ".ini")
+            {
+                throw new Exception("ERROR: Invalid file extencion");
             }
             
-
-            string command = "";
-            while (command != "stop")
+            string[] lines = File.ReadAllLines(parser.path);
+            foreach (var line in lines)
             {
-                Console.Write("Enter the command: ");
-                command = Console.ReadLine();
-
-                if (command == "GetInt")
-                {
-                    int result = data.TryGetInt(Console.ReadLine(), Console.ReadLine());
-
-                    Console.WriteLine($"Result: {result}");
-                }
-                else if (command == "GetDb")
-                {
-                    double result = data.TryGetDouble(Console.ReadLine(), Console.ReadLine());
-
-                    Console.WriteLine($"Result: {result}");
-                }
-                else if (command == "GetStr")
-                {
-                    string result = data.TryGetString(Console.ReadLine(), Console.ReadLine());
-
-                    Console.WriteLine($"Result: {result}");
-                }
+                string editline = parser.DeleteComments(line);
+                parser.Parsing(editline);
             }
+            
+            Console.WriteLine(data.TryGetInt(parser.GetValue("SECTION1", "nameI")));
+            Console.WriteLine(data.TryGetInt(parser.GetValue("SECTION1", "nameD")));
+            Console.WriteLine(data.TryGetString(parser.GetValue("SECTION2", "nameS")));
         }
     }
-    
 }
