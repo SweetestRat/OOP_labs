@@ -6,17 +6,18 @@ namespace IniParser
     {
         public int TryGetInt(string value)
         {
+            if (value == null)
+            {
+                throw new Exception("ERROR: No such key or section");
+            }
+            
             bool success = Int32.TryParse(value, out int number);
             
             if (!success)
             {
                 throw new Exception("ERROR: Failed to parse: int");
             }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                return number;
-            }
+            return number;
         }
 
         public double TryGetDouble(string value)
@@ -27,11 +28,7 @@ namespace IniParser
             {
                 throw new Exception("ERROR: Failed to parse: double");
             }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                return number;
-            }
+            return number;
         }
         
         public string TryGetString(string value)
@@ -45,11 +42,7 @@ namespace IniParser
             {
                 throw new Exception("ERROR: Failed to parse: string");
             }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                return value;
-            }
+            return value;
         }
     }
 }
