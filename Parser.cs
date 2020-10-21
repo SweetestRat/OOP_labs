@@ -1,101 +1,70 @@
-﻿using System;
+using System;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-namespace lab1
+namespace IniParser
 {
-    internal class Parser
+    public class Parser
     {
-        private Dictionary<string, Dictionary<string, string>> _map = new Dictionary<string, Dictionary<string, string>>();
-        private FileStream _file;
+        public List<Tuple<string, string, string>> inidata = new List<Tuple<string, string, string>>();
+        
+        Grammar grammar = new Grammar();
+        
+        public string path = "/Users/vladislavagilde/RiderProjects/INI_parser/IniParser/inifile.ini";
 
-        public Dictionary<string, Dictionary<string, string>> GetMap() { return this._map; }
-        internal Parser(string path)
+        int position = 0;
+        private string sect;
+        private string[] elements;
+        
+        public void Parsing(string line)
         {
-            
-            if (!path.Contains(".ini"))
+            if (Regex.IsMatch(line, grammar.section))
             {
-                Console.WriteLine("ERROR: Wrong format");
-                Environment.Exit(1);
+                line = line.Remove(0, 1);
+                line = line.Remove(line.Length - 1, 1);
+                sect = line;
+            }
+            else if (Regex.IsMatch(line, grammar.key) &&
+                    (Regex.IsMatch(line, grammar.valueInt) ||
+                    Regex.IsMatch(line, grammar.valueFloat) ||
+                    Regex.IsMatch(line, grammar.valueString)))
+            {
+                elements = line.Split('=');
 
-            }
-            try
-            {
-                _file = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+                var tuple = Tuple.Create(sect, elements[0].Remove(elements[0].Length - 1, 1), elements[1].Remove(0, 1));
+                inidata.Add(tuple);
                 
             }
-            ReadWithoutWaste();
         }
-        private void PutMap(List<string> _file)
+        private bool CommentExist(string line)
         {
-             
-             var MainKey = "";
-
-            foreach (var i in _file)
-            {
-                if (i.Contains("["))
-                {
-                    MainKey = i;
-                    MainKey = i.Replace("[", "").Replace("]", "").Replace(" ", "");
-
-                    _map.Add($"{MainKey}", new Dictionary<string, string>());
-                }
-                else if (!string.IsNullOrEmpty(i))
-                {
-                    string name, value;
-                    string[] tmp = i.Split('=');
-                    name = tmp[0]
-                        .Replace(" ", "")
-                        .Replace("\t", "")
-                        .Replace("\n", "");
-                    value = tmp[1]
-                        .Replace(" ", "")
-                        .Replace("\t", "")
-                        .Replace("\n", "")
-                        .Replace(".", ",");
-
-                    _map[$"{MainKey}"].Add($"{name}", $"{value}");
-                }
-                else
-                {
-                    
-                    continue;
-                }
-            }
+            position = line.IndexOf(';', 0);
             
-
+            return position != -1;
+        }
+        
+        public string DeleteComments(string line)
+        {
+            if (CommentExist(line)) 
+            { 
+                line = line.Remove(position);
+            }
+            return line;
         }
 
-
-        private void ReadWithoutWaste()
+        public string GetValue(string Section, string Key)
         {
-            var reader = new StreamReader(_file);
-            string text = "", tmp;
-
-            while (!reader.EndOfStream)
+            foreach (var item in inidata)
             {
-
-                tmp = reader.ReadLine();
-                int index = tmp.IndexOf(";", StringComparison.Ordinal);
-
-                if (index != -1)
+                if (item.Item1 == Section)
                 {
-                    tmp = tmp.Remove(index, tmp.Length - index);
-                }
-
-                if (!string.IsNullOrEmpty(tmp))
-                {
-                    text += tmp + "\n";
+                    if (item.Item2 == Key)
+                    {
+                        return item.Item3;
+                    }
                 }
             }
-            reader.Close();
-           PutMap(text.Split('\n').ToList());
-
-        }       
+            return null;
+        }
     }
 }
