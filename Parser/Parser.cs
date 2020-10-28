@@ -34,6 +34,10 @@ namespace IniParser
                 var tuple = Tuple.Create(sect, elements[0], elements[1]);
                 inidata.Add(tuple);
             }
+            else
+            {
+                throw new Exception("ERROR: Invalid file structure");
+            }
         }
         private bool CommentExist(string line)
         {
