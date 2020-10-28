@@ -28,9 +28,9 @@ namespace IniParser
                 parser.Parsing(editline);
             }
             
-            Console.WriteLine(parser.TryGetInt(parser.GetValue("SECTION1", "nameI")));
-            Console.WriteLine(parser.TryGetInt(parser.GetValue("SECTION1", "nameD")));
-            Console.WriteLine(parser.TryGetString(parser.GetValue("SECTION2", "nameS")));
+            Console.WriteLine(parser.TryGetInt("SECTION1", "nameI"));
+            Console.WriteLine(parser.TryGetInt("SECTION1", "nameD"));
+            Console.WriteLine(parser.TryGetString("SECTION2", "nameS"));
         }
     }
 }
