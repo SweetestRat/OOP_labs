@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace IniParser
@@ -8,7 +8,6 @@ namespace IniParser
         static void Main(string[] args)
         {
             Parser parser = new Parser();
-            IniData data = new IniData();
 
             if (!File.Exists(parser.path))
             {
@@ -29,9 +28,9 @@ namespace IniParser
                 parser.Parsing(editline);
             }
             
-            Console.WriteLine(data.TryGetInt(parser.GetValue("SECTION1", "nameI")));
-            Console.WriteLine(data.TryGetInt(parser.GetValue("SECTION1", "nameD"))); //ERROR: Failed to parse: int
-            Console.WriteLine(data.TryGetString(parser.GetValue("SECTION2", "nameS")));
+            Console.WriteLine(parser.TryGetInt(parser.GetValue("SECTION1", "nameI")));
+            Console.WriteLine(parser.TryGetInt(parser.GetValue("SECTION1", "nameD")));
+            Console.WriteLine(parser.TryGetString(parser.GetValue("SECTION2", "nameS")));
         }
     }
 }
