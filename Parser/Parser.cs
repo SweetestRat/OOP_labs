@@ -52,7 +52,7 @@ namespace IniParser
             return line;
         }
 
-        public string GetValue(string Section, string Key)
+        private string GetValue(string Section, string Key)
         {
             foreach (var item in inidata)
             {
@@ -67,8 +67,10 @@ namespace IniParser
             return null;
         }
         
-        public int TryGetInt(string value)
+        public int TryGetInt(string Section, string Key)
         {
+            string value = GetValue(Section, Key);
+            
             if (value == null)
             {
                 throw new Exception("ERROR: No such key or section");
@@ -83,8 +85,9 @@ namespace IniParser
             return number;
         }
 
-        public double TryGetDouble(string value)
+        public double TryGetDouble(string Section, string Key)
         {
+            string value = GetValue(Section, Key);
             
             bool success = double.TryParse(value, out double number);
             if (!success)
@@ -94,8 +97,10 @@ namespace IniParser
             return number;
         }
         
-        public string TryGetString(string value)
+        public string TryGetString(string Section, string Key)
         {
+            string value = GetValue(Section, Key);
+            
             if (Int32.TryParse(value, out int numberInt))
             {
                 throw new Exception("ERROR: Failed to parse: string");
