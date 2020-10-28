@@ -29,8 +29,8 @@ namespace IniParser
             }
             
             Console.WriteLine(parser.TryGetInt("SECTION1", "nameI"));
-            Console.WriteLine(parser.TryGetInt("SECTION1", "nameD"));
-            Console.WriteLine(parser.TryGetString("SECTION2", "nameS"));
+            Console.WriteLine(parser.TryGetDouble("SECTION1", "nameD"));
+            Console.WriteLine(parser.TryGetString("ADC_DEV", "Driver"));
         }
     }
 }
