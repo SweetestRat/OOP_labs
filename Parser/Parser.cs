@@ -6,13 +6,13 @@ namespace IniParser
 {
     public class Parser
     {
-        public List<Tuple<string, string, string>> inidata = new List<Tuple<string, string, string>>();
+        private List<Tuple<string, string, string>> inidata = new List<Tuple<string, string, string>>();
         
         Grammar grammar = new Grammar();
         
         public string path = "/Users/vladislavagilde/RiderProjects/INI_parser/IniParser/inifile.ini";
 
-        int position = 0;
+        private int position = 0;
         private string sect;
         private string[] elements;
         
@@ -65,6 +65,47 @@ namespace IniParser
                 }
             }
             return null;
+        }
+        
+        public int TryGetInt(string value)
+        {
+            if (value == null)
+            {
+                throw new Exception("ERROR: No such key or section");
+            }
+            
+            bool success = Int32.TryParse(value, out int number);
+            
+            if (!success)
+            {
+                throw new Exception("ERROR: Failed to parse: int");
+            }
+            return number;
+        }
+
+        public double TryGetDouble(string value)
+        {
+            
+            bool success = double.TryParse(value, out double number);
+            if (!success)
+            {
+                throw new Exception("ERROR: Failed to parse: double");
+            }
+            return number;
+        }
+        
+        public string TryGetString(string value)
+        {
+            if (Int32.TryParse(value, out int numberInt))
+            {
+                throw new Exception("ERROR: Failed to parse: string");
+            }
+            // ReSharper disable once RedundantIfElseBlock
+            else if (Double.TryParse(value, out double numberDouble))
+            {
+                throw new Exception("ERROR: Failed to parse: string");
+            }
+            return value;
         }
     }
 }
