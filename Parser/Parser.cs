@@ -6,7 +6,7 @@ namespace IniParser
 {
     public class Parser
     {
-        private List<Tuple<string, string, string>> inidata = new List<Tuple<string, string, string>>();
+        public List<Tuple<string, string, string>> inidata = new List<Tuple<string, string, string>>();
         
         Grammar grammar = new Grammar();
         
@@ -29,11 +29,10 @@ namespace IniParser
                     Regex.IsMatch(line, grammar.valueFloat) ||
                     Regex.IsMatch(line, grammar.valueString)))
             {
-                elements = line.Split('=');
-
-                var tuple = Tuple.Create(sect, elements[0].Remove(elements[0].Length - 1, 1), elements[1].Remove(0, 1));
-                inidata.Add(tuple);
+                elements = line.Split('=', 2, StringSplitOptions.RemoveEmptyEntries);
                 
+                var tuple = Tuple.Create(sect, elements[0], elements[1]);
+                inidata.Add(tuple);
             }
         }
         private bool CommentExist(string line)
@@ -52,7 +51,7 @@ namespace IniParser
             return line;
         }
 
-        private string GetValue(string Section, string Key)
+        public string GetValue(string Section, string Key)
         {
             foreach (var item in inidata)
             {
@@ -89,6 +88,11 @@ namespace IniParser
         {
             string value = GetValue(Section, Key);
             
+            if (value == null)
+            {
+                throw new Exception("ERROR: No such key or section");
+            }
+            
             bool success = double.TryParse(value, out double number);
             if (!success)
             {
@@ -100,6 +104,11 @@ namespace IniParser
         public string TryGetString(string Section, string Key)
         {
             string value = GetValue(Section, Key);
+            
+            if (value == null)
+            {
+                throw new Exception("ERROR: No such key or section");
+            }
             
             if (Int32.TryParse(value, out int numberInt))
             {
