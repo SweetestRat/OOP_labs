@@ -24,15 +24,18 @@ namespace IniParser
                 line = line.Remove(line.Length - 1, 1);
                 sect = line;
             }
-            else if (Regex.IsMatch(line, grammar.key) &&
-                    (Regex.IsMatch(line, grammar.valueInt) ||
-                    Regex.IsMatch(line, grammar.valueFloat) ||
-                    Regex.IsMatch(line, grammar.valueString)))
+            else if (line.Contains("="))
             {
-                elements = line.Split('=', 2, StringSplitOptions.RemoveEmptyEntries);
-                
-                var tuple = Tuple.Create(sect, elements[0], elements[1]);
-                inidata.Add(tuple);
+                if (Regex.IsMatch(line, grammar.key) &&
+                    (Regex.IsMatch(line, grammar.valueInt) ||
+                     Regex.IsMatch(line, grammar.valueFloat) ||
+                     Regex.IsMatch(line, grammar.valueString)))
+                {
+                    elements = line.Split('=', 2, StringSplitOptions.RemoveEmptyEntries);
+
+                    var tuple = Tuple.Create(sect, elements[0].Trim(), elements[1].Trim());
+                    inidata.Add(tuple);
+                }
             }
             else
             {
