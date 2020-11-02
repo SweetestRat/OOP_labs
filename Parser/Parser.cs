@@ -31,10 +31,17 @@ namespace IniParser
                      Regex.IsMatch(line, grammar.valueFloat) ||
                      Regex.IsMatch(line, grammar.valueString)))
                 {
-                    elements = line.Split('=', 2, StringSplitOptions.RemoveEmptyEntries);
+                    elements = line.Split('=', 2);
 
-                    var tuple = Tuple.Create(sect, elements[0].Trim(), elements[1].Trim());
-                    inidata.Add(tuple);
+                    if (elements[0].Trim() != String.Empty && elements[1].Trim() != String.Empty)
+                    {
+                        var tuple = Tuple.Create(sect, elements[0].Trim(), elements[1].Trim());
+                        inidata.Add(tuple);
+                    }
+                    else
+                    {
+                        throw new Exception("ERROR: Invalid file structure");
+                    }
                 }
             }
             else
