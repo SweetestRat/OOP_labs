@@ -25,7 +25,9 @@ namespace IniParser
             foreach (var line in lines)
             {
                 string editline = parser.DeleteComments(line);
-                parser.Parsing(editline);
+                
+                if(editline.Trim() != string.Empty)
+                    parser.Parsing(editline);
             }
             
             Console.WriteLine(parser.TryGetInt("SECTION1", "nameI"));
