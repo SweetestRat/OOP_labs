@@ -24,36 +24,17 @@ namespace Racing_Simulator
             {
                 throw new Exception("ERROR: you have already registered this vehicle type for the race");
             }
-            
-            if (raceType == "air")
+            if (raceType == vehicle.Type)
             {
-                if (vehicle.Type == "air")
-                {
-                    raceVehicles.Add(vehicle);
-                }
-                else
-                {
-                    throw new Exception("ERROR: Vehicle has type land. Expected: air");
-                }
+                raceVehicles.Add(vehicle);
             }
-            else if (raceType == "land")
-            {
-                if (vehicle.Type == "land")
-                {
-                    raceVehicles.Add(vehicle);
-                }
-                else
-                {
-                    throw new Exception("ERROR: Vehicle has type air. Expected: land");
-                }
-            }
-            else if (raceType == "all")
+            else if (raceType == vehicle.Type)
             {
                 raceVehicles.Add(vehicle);
             }
             else
             {
-                throw new Exception("Unknown race type");
+                throw new Exception($"ERROR: Vehicle has type {vehicle.Type}. Expected: {raceType}");
             }
         }
 
