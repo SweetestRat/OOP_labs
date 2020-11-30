@@ -1,5 +1,3 @@
-using System;
-
 namespace Racing_Simulator
 {
     public class LandVehicle : Vehicle
@@ -17,7 +15,7 @@ namespace Racing_Simulator
             restDuration = _restDuration;
         }
 
-        public override void CalcTime(double dist)
+        public override double CalcTime(double dist)
         {
             var numOfRestIntervals = dist / restInterval;
 
@@ -37,6 +35,8 @@ namespace Racing_Simulator
                     }
                 }
             }
+
+            return Time;
         }
     }
 }
