@@ -15,7 +15,7 @@ namespace Racing_Simulator
             distanceReducer = _distanceReducer;
         }
 
-        public override void CalcTime(double dist)
+        public override double CalcTime(double dist)
         {
             foreach (var pair in distanceReducer)
             {
@@ -69,6 +69,8 @@ namespace Racing_Simulator
                     throw new Exception("ERROR: incorrect data for time calculations");
                 }
             }
+
+            return Time;
         }
         
     }
