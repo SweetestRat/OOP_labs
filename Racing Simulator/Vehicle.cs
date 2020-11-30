@@ -28,6 +28,6 @@ namespace Racing_Simulator
             set => time = value;
         }
 
-        public abstract void CalcTime(double dist);
+        public abstract double CalcTime(double dist);
     }
 }
