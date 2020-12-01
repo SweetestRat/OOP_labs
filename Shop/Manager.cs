@@ -6,6 +6,7 @@ namespace Shop
     public class Manager
     {
         public Dictionary<Guid, Shop> shops = new Dictionary<Guid, Shop>();
+        public List<Guid> guids = new List<Guid>();
 
         public struct cheapprodinfo
         {
@@ -38,8 +39,12 @@ namespace Shop
             }
         }
         
-        public cheapprodinfo FindCheapestProd(string prodName)
+        public cheapprodinfo FindCheapestProd(Guid _prodId)
         {
+            if (!guids.Contains(_prodId))
+            {
+                throw new Exception("ERROR: Such product doesn't exist");
+            }
             cheapprodinfo cheapprodinfo = default;
             int price = Int32.MaxValue;
 
@@ -47,7 +52,7 @@ namespace Shop
             {
                 foreach (var value in curShop.Value.catalog.Values)
                 {
-                    if (value.prodName == prodName)
+                    if (value.prodId == _prodId)
                     {
                         if (value.prodPrice < price)
                         {
@@ -61,26 +66,27 @@ namespace Shop
                 }
             }
 
-            if (cheapprodinfo.ChProdPrice == 0)
-            {
-                throw new Exception("ERROR: Such product doesn't exist");
-            }
+            // if (cheapprodinfo.ChProdPrice == 0)
+            // {
+            //     throw new Exception("ERROR: Such product doesn't exist");
+            // }
             return cheapprodinfo;
         }
         
-        public int BuyConsignment(Guid[] goods, int[] amount, Shop shop)
+        public int BuyConsignment(Dictionary<Guid, int> GoodsForCons, Shop shop)
         {
             int sum = 0;
 
-            for (int i = 0; i < goods.Length; i++)
+            foreach (var good in GoodsForCons)
             {
-                if (shop.catalog.ContainsKey(goods[i]))
+                if (shop.catalog.ContainsKey(good.Key))
                 {
-                    var id = goods[i];
-                    if (amount[i] <= shop.catalog[id].prodAmount)
+                    var id = good.Key;
+                    var amount = good.Value;
+                    if (amount <= shop.catalog[id].prodAmount)
                     {
-                        shop.catalog[id].prodAmount -= amount[i];
-                        sum += amount[i] * shop.catalog[id].prodPrice;
+                        shop.catalog[id].prodAmount -= amount;
+                        sum += amount * shop.catalog[id].prodPrice;
                     }
                     else
                     {
@@ -92,34 +98,32 @@ namespace Shop
                     throw new Exception("ERROR: No such product exist");
                 }
             }
-
+            
             return sum;
         }
 
         private Shop CheapestShop;
         
-        public Shop FindCheapestShopToBuyCons(Guid[] goods, int[] amount)
+        public Shop FindCheapestShopToBuyCons(Dictionary<Guid, int> GoodsForCheapestShop)
         {
             var minPrice = Int32.MaxValue;
             
             foreach (var curShop in shops)
             {
-                for (int i = 0; i < goods.Length; i++)
+                foreach (var good in GoodsForCheapestShop)
                 {
-                    if (curShop.Value.catalog.ContainsKey(goods[i]))
+                    var id = good.Key;
+                    var amount = good.Value;
+                    
+                    if (curShop.Value.catalog.ContainsKey(id))
                     {
-                        var id = goods[i];
-                        var PriceInShop = curShop.Value.catalog[id].prodPrice * amount[i];
+                        var PriceInShop = curShop.Value.catalog[id].prodPrice * amount;
 
                         if (PriceInShop < minPrice)
                         {
                             minPrice = PriceInShop;
                             CheapestShop = curShop.Value;
                         }
-                    }
-                    else
-                    {
-                        throw new Exception("ERROR: No such product exist");
                     }
                 }
             }
