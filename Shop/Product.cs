@@ -36,8 +36,6 @@ namespace Shop
         {
             prodName = _prodName;
             prodId = Guid.NewGuid();
-
-            // return prodId;
         }
     }
 }
