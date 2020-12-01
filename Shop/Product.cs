@@ -18,26 +18,26 @@ namespace Shop
             set => prodid = value;
         }
         
-        public int prodprice;
+        private int prodprice;
         public int prodPrice
         {
             get => prodprice;
             set => prodprice = value;
         }
         
-        public int prodamount;
+        private int prodamount;
         public int prodAmount
         {
             get => prodamount;
             set => prodamount = value;
         }
         
-        public Guid CreateProduct(string _prodName)
+        public Product(string _prodName)
         {
             prodName = _prodName;
             prodId = Guid.NewGuid();
 
-            return prodId;
+            // return prodId;
         }
     }
 }
