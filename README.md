@@ -13,3 +13,10 @@
 - Racing simulator
     - [Task description](https://github.com/SweetestRat/OOP_labs/blob/main/Racing%20Simulator/task_description.md "Task description")
     - [Solution](https://github.com/SweetestRat/OOP_labs/tree/main/Racing%20Simulator "Solution")
+
+- Backups
+    - [Solution](https://github.com/SweetestRat/OOP_labs/tree/main/Backup "Solution")
+
+- Bancks
+    - [Task description](https://github.com/SweetestRat/OOP_labs/blob/main/Banks/task_description.md "Task description")
+    - [Solution](https://github.com/SweetestRat/OOP_labs/tree/main/Banks "Solution")
