@@ -26,4 +26,4 @@ In developing was used such patterns as:
  - Factory (account)
  - Builder (client)
  - Command (transactions)
- - Singleton - (Manager)
+ - Singleton (Manager)
