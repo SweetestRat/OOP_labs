@@ -22,3 +22,8 @@ From time to time, banks carry out operations to pay interest and deduct commiss
 
 Another mandatory mechanism that banks must have is the **cancellation of transactions**. If a it suddenly turns out that the transaction was committed by an intruder, then such a transaction must be canceled.
 
+In developing was used such patterns as:
+ - Factory (account)
+ - Builder (client)
+ - Command (transactions)
+ - Singleton - (Manager)
